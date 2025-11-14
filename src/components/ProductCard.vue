@@ -1,36 +1,54 @@
 <template>
   <div class="product__card">
-    <img :src="image" :alt="title" class="product-card__image" />
-    <h3 class="product-card__title">{{ title }}</h3>
-    <p class="product-card__price">{{ price }} ₽</p>
-    <button class="product__card-button">Добавить в корзину</button>
+    <button class="product__card-favorite" @click="toggle">
+      <i class="bi" :class="isFav ? 'bi-heart-fill' : 'bi-heart'"></i>
+    </button>
+    <img :src="image" :alt="title" class="product__card-image" />
+    <h3 class="product__card-title">{{ title }}</h3>
+    <p class="product__card-price">{{ price }} ₽</p>
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { useFavoritesStore } from '../store/favorites'
+
 const props = defineProps({
+  id: Number,
   title: String,
   price: Number,
   image: String,
 })
+
+const favoritesStore = useFavoritesStore()
+const isFavorite = computed(() => favoritesStore.isFavorite(props.id))
+
+const toggle = () => {
+  favoritesStore.toggleFavorite({
+    id: props.id,
+    title: props.title,
+    price: props.price,
+    image: props.image,
+  })
+}
 </script>
 
 <style scoped>
 .product__card {
+  position: relative;
   overflow: hidden;
   background-color: #fff;
   text-align: left;
-  max-width: 16.875rem;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .product__card-image {
   width: 100%;
-  height: 22.063rem;
+  height: auto;
   object-fit: cover;
   margin-bottom: 1.25rem;
-  transition: transform 0.3s ease;
 }
 
 .product__card-title {
@@ -48,22 +66,19 @@ const props = defineProps({
   margin-top: 0.5rem;
 }
 
-.product__card-button {
-  background-color: rgba(255, 255, 255, 1);
-  color: rgba(45, 45, 45, 1);
+.product__card-favorite {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 1);
+  background: transparent;
   border: none;
-  padding: 0.6rem 1.2rem;
-  font-weight: 400;
-  align-self: flex-start;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #e6cf03;
-  }
+  z-index: 3;
 }
 
-.product__card--large {
-  height: 44.5rem;
+.bi-heart-fill {
+  color: #ff3b3b;
 }
 </style>

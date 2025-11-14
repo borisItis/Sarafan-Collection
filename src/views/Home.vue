@@ -1,15 +1,17 @@
 <template>
-  <Header />
   <main>
     <HeroSlider :slides="slider" />
     <Product />
+    <InspiredSection />
+    <ProductCarousel />
   </main>
 </template>
 
 <script setup>
-import Header from '../components/Header.vue'
 import HeroSlider from '../components/HeroSlider.vue'
 import Product from '../components/Product.vue'
+import InspiredSection from '../components/InspiredSection.vue'
+import ProductCarousel from '../components/ProductCarousel.vue'
 import HeroImage1 from '../assets/images/HeroImage1.jpg'
 import HeroImage2 from '../assets/images/HeroImage2.jpg'
 import HeroImage3 from '../assets/images/HeroImage3.jpg'

@@ -6,6 +6,7 @@
         <ProductCard
           v-for="(item, index) in products"
           :key="item.id"
+          :id="item.id"
           :title="item.title"
           :price="item.price"
           :image="item.image"
@@ -62,6 +63,6 @@ const products = [
 
 .product__card-cards > .product__card--large {
   grid-column: span 2;
-  height: 44.5rem;
+  height: auto;
 }
 </style>

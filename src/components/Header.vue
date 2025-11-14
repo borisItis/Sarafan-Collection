@@ -16,9 +16,9 @@
         <i class="bi bi-list"></i>
       </div>
       <div class="header__nav-logo">
-        <a class="header__nav-logo-img" href="#!">
+        <router-link class="header__nav-logo-img" to="/">
           <img src="../assets/images/headerLogo.svg" alt="Sarafan" />
-        </a>
+        </router-link>
       </div>
       <div class="header__nav-right">
         <div class="header__nav-right-search-wrapper">
@@ -34,6 +34,9 @@
         <div class="header__nav-right-icons">
           <router-link to="/favorites" class="header__nav-right-icon" title="Избранное">
             <i class="bi bi-heart"></i>
+            <span v-if="favoritesCount > 0" class="header__nav-right-icon-count">
+              {{ favoritesCount }}
+            </span>
           </router-link>
           <router-link to="/cart" class="header__nav-right-icon" title="Корзина">
             <i class="bi bi-cart"></i>
@@ -54,7 +57,9 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '../store/cart'
+import { useFavoritesStore } from '../store/favorites'
 
+const favoritesStore = useFavoritesStore()
 const cartStore = useCartStore()
 const menuOpen = ref(false)
 const search = ref('')
@@ -167,9 +172,24 @@ function onSearch() {
           color 0.3s,
           transform 0.2s;
 
+        &.fav-count {
+          position: absolute;
+          top: -6px;
+          right: -10px;
+          background: #ff3b3b;
+          color: white;
+          font-size: 0.7rem;
+          width: 17px;
+          height: 17px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
         &:hover {
           color: #e6cf03;
-          transform: scale(1.1);
+          transition: all 0.3s ease-in-out;
         }
 
         &-count {
