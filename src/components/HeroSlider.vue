@@ -3,7 +3,7 @@
     <Swiper
       :loop="true"
       :autoplay="{ delay: 5000 }"
-      :pagination="{ el: '.hero__pagination', clickable: true }"
+      :pagination="{ clickable: true }"
       class="hero__slider"
     >
       <SwiperSlide v-for="slide in slides" :key="slide.id">
@@ -18,7 +18,6 @@
           </div>
         </div>
       </SwiperSlide>
-      <div class="hero__pagination"></div>
     </Swiper>
   </section>
 </template>
@@ -39,7 +38,18 @@ const props = defineProps({
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+.swiper .swiper-pagination .swiper-pagination-bullet {
+  width: 0.813rem !important;
+  height: 0.813rem !important;
+  background: rgba(229, 229, 229, 0.46) !important;
+  opacity: 1 !important;
+  margin-bottom: 5rem !important;
+}
+
+.swiper .swiper-pagination .swiper-pagination-bullet-active {
+  background: rgba(220, 219, 219, 1) !important;
+}
 .hero {
   width: 100%;
   min-height: auto;
@@ -105,26 +115,6 @@ const props = defineProps({
         font-size: 1rem;
         margin-top: 1.563rem;
         text-decoration: none;
-
-        .hero__pagination {
-          position: absolute;
-          bottom: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 10;
-          display: flex;
-          gap: 8px;
-        }
-
-        .swiper-pagination-bullet {
-          width: 12px;
-          height: 12px;
-          background: #fff;
-        }
-
-        .swiper-pagination-bullet-active {
-          background: #e6cf03;
-        }
 
         &:hover {
           background: #d6bf03;
