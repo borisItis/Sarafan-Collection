@@ -8,7 +8,14 @@
         <h4 class="footer__nav-title">{{ section.title }}</h4>
         <ul class="footer__nav-list">
           <li v-for="link in section.links" :key="link.text">
-            <a :href="link.url" class="footer__nav-link">{{ link.text }}</a>
+            <router-link
+              :to="link.url"
+              :class="{ 'is-placeholder': link.url === '#' }"
+              @click.prevent="link.url === '#' && $event.preventDefault()"
+              class="footer__nav-link"
+            >
+              {{ link.text }}
+            </router-link>
           </li>
         </ul>
       </div>
@@ -16,7 +23,7 @@
     <div class="footer__copyright">
       <p class="footer__copyright-text">
         Все права защищены.Пользовательское соглашение.Политика конфиденциальности <br />
-        © 2022 sarafancollection.ru
+        © {{ new Date().getFullYear() }} sarafancollection.ru
       </p>
     </div>
   </footer>
@@ -35,7 +42,7 @@ const footerLinks = [
   {
     title: 'Компания',
     links: [
-      { text: 'О нас', url: '#' },
+      { text: 'О нас', url: '/about' },
       { text: 'Наши магазины', url: '#' },
       { text: 'Контакты', url: '#' },
     ],

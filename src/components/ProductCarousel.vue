@@ -1,6 +1,6 @@
 <template>
-  <section class="product-carousel-section">
-    <h2 class="section-title">Успей купить</h2>
+  <section class="product__carousel-section">
+    <h2 class="product__carousel-title">Успей купить</h2>
     <swiper
       :modules="modules"
       :slides-per-view="1.2"
@@ -13,15 +13,18 @@
       class="product-swiper"
     >
       <swiper-slide v-for="product in products" :key="product.id">
-        <a :href="product.link" class="product-card-link">
-          <div class="product-card">
-            <div class="product-image-wrapper">
-              <img :src="product.image" :alt="product.title" class="product-image" />
+        <a :href="product.link" class="product__carousel-link">
+          <div class="product__carousel-card">
+            <div class="product__carousel-image">
+              <img :src="product.image" :alt="product.title" class="product__carousel-image-img" />
             </div>
-            <div class="product-details">
-              <p class="product-title">{{ product.title }}</p>
-              <p class="product-price">{{ product.price }}</p>
+            <div class="product__carousel-info">
+              <p class="product__carousel-paragraph">{{ product.title }}</p>
+              <p class="product__carousel-price">{{ product.price }}</p>
             </div>
+            <button class="product__carousel-favorite" @click="toggle">
+              <i class="bi" :class="isFav ? 'bi-heart-fill' : 'bi-heart'"></i>
+            </button>
           </div>
         </a>
       </swiper-slide>
@@ -41,6 +44,10 @@ import CollectionImage3 from '../assets/images/CollectionImage3.jpg'
 import CollectionImage4 from '../assets/images/CollectionImage4.jpg'
 import CollectionImage5 from '../assets/images/CollectionImage5.jpg'
 import CollectionImage6 from '../assets/images/CollectionImage6.jpg'
+import CollectionImage7 from '../assets/images/CollectionImage7.jpg'
+import CollectionImage8 from '../assets/images/CollectionImage8.jpg'
+import CollectionImage9 from '../assets/images/CollectionImage9.jpg'
+
 const products = reactive([
   {
     id: 1,
@@ -64,17 +71,10 @@ const products = reactive([
     link: '#',
   },
   {
-    id: 4,
-    image: CollectionImage4,
-    title: 'Атласный топ-комбинация',
-    price: '2 799 руб.',
-    link: '#',
-  },
-  {
     id: 5,
     image: CollectionImage5,
-    title: 'Пятое платье',
-    price: '4 500 руб.',
+    title: 'Блейзер с декоративными пуговицами',
+    price: '9 999 руб.',
     link: '#',
   },
   {
@@ -84,38 +84,63 @@ const products = reactive([
     price: '9 999 руб.',
     link: '#',
   },
+  {
+    id: 4,
+    image: CollectionImage4,
+    title: 'Атласный топ-комбинация',
+    price: '2 799 руб.',
+    link: '#',
+  },
+  {
+    id: 7,
+    image: CollectionImage7,
+    title: 'Блейзер с декоративными пуговицами',
+    price: '9 999 руб.',
+    link: '#',
+  },
+  {
+    id: 8,
+    image: CollectionImage8,
+    title: 'Блейзер с декоративными пуговицами',
+    price: '9 999 руб.',
+    link: '#',
+  },
+
+  {
+    id: 9,
+    image: CollectionImage9,
+    title: 'Блейзер с декоративными пуговицами',
+    price: '4 500 руб.',
+    link: '#',
+  },
 ])
 
-// --- 2. Настройки Swiper ---
 const modules = [Navigation]
 
 const swiperBreakpoints = {
-  // На мобильных (от 0px):
   0: {
-    slidesPerView: 1.2, // Показываем 1 полный и часть следующего
+    slidesPerView: 1.2,
     spaceBetween: 10,
   },
-  // На планшетах (от 768px):
   768: {
     slidesPerView: 3,
     spaceBetween: 20,
   },
-  // На десктопах (от 1024px):
   1024: {
-    slidesPerView: 4, // 4 товара, как на макете
+    slidesPerView: 4,
     spaceBetween: 30,
   },
 }
 </script>
 
 <style scoped>
-.product-carousel-section {
+.product__carousel-section {
   width: 100%;
   padding: 1.875rem;
   margin-top: 7.5rem;
 }
 
-.section-title {
+.product__carousel-title {
   font-size: 1.563rem;
   line-height: 113%;
   color: rgba(45, 45, 45, 1);
@@ -125,34 +150,34 @@ const swiperBreakpoints = {
   letter-spacing: 3%;
 }
 
-.product-card {
+.product__carousel-card {
   display: flex;
   flex-direction: column;
 }
 
-.product-image-wrapper {
+.product__carousel-image {
   width: 100%;
   height: 0;
   padding-bottom: 100%;
   overflow: hidden;
   position: relative;
 }
-.product-image {
-  max-width: 100%;
+.product__carousel-image-img {
+  width: 100%;
   object-fit: cover;
   height: auto;
   margin-bottom: 1.25rem;
 }
 
-.product-card-link {
+.product__carousel-link {
   text-decoration: none;
 }
 
-.product-details {
+.product__carousel-info {
   margin-top: 15px;
 }
 
-.product-title {
+.product__carousel-paragraph {
   font-size: 1rem;
   margin-bottom: 0.5rem;
   color: rgba(45, 45, 45, 1);
@@ -162,7 +187,7 @@ const swiperBreakpoints = {
   letter-spacing: 0%;
 }
 
-.product-price {
+.product__carousel-price {
   font-size: 0.938rem;
   color: rgba(45, 45, 45, 1);
   font-weight: 400;
@@ -170,5 +195,21 @@ const swiperBreakpoints = {
   text-align: left;
   letter-spacing: 0%;
   margin-top: 0.5rem;
+}
+
+.product__carousel-favorite {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 1);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.bi-heart-fill {
+  color: #ff3b3b;
 }
 </style>
