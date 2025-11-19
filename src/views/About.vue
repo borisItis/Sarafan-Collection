@@ -57,7 +57,8 @@ import AboutImage2 from '../assets/images/AboutImage2.jpg'
 }
 
 .about__page-image {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
   gap: 1.875rem;
   margin-bottom: 6.25rem;
   &-img {

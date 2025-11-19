@@ -202,7 +202,7 @@ const swiperBreakpoints = {
   top: 1rem;
   right: 1rem;
   font-size: 1.25rem;
-  color: rgba(255, 255, 255, 1);
+  color: rgba(45, 45, 45, 1);
   background: transparent;
   border: none;
   cursor: pointer;

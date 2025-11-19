@@ -33,10 +33,13 @@
         </div>
         <div class="header__nav-right-icons">
           <router-link to="/favorites" class="header__nav-right-icon" title="Избранное">
-            <i class="bi bi-heart"></i>
-            <span v-if="favoritesCount > 0" class="header__nav-right-icon-count">
-              {{ favoritesCount }}
-            </span>
+            <img
+              src="../assets/images/favorite.svg"
+              alt="Favorite"
+              class="header__favorite-icon"
+              :class="{ active: isFavorite }"
+            />
+            <span class="header__favorite-count">{{ store.favorites.length }}</span>
           </router-link>
           <router-link to="/cart" class="header__nav-right-icon" title="Корзина">
             <i class="bi bi-cart"></i>
@@ -59,12 +62,13 @@ import { useRouter } from 'vue-router'
 import { useCartStore } from '../store/cart'
 import { useFavoritesStore } from '../store/favorites'
 
-const favoritesStore = useFavoritesStore()
+const store = useFavoritesStore()
 const cartStore = useCartStore()
 const menuOpen = ref(false)
 const search = ref('')
 const router = useRouter()
 const cartCount = computed(() => (Array.isArray(cartStore.cart) ? cartStore.cart.length : 0))
+const isFavorite = computed(() => store.favorites.length > 0)
 
 const links = [
   { label: 'Новинки', to: { name: 'catalog', query: { category: 'new' } } },
@@ -165,41 +169,39 @@ function onSearch() {
 
       .header__nav-right-icon {
         position: relative;
-        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
         cursor: pointer;
+        gap: 0.25rem;
+        font-size: 1.5rem;
         color: rgba(45, 45, 45, 1);
         transition:
           color 0.3s,
           transform 0.2s;
 
-        &.fav-count {
+        .header__favorite-icon {
+          width: 1.5rem;
+          height: 1.5rem;
+          transition: filter 0.3s;
+
+          &.active {
+            filter: none;
+          }
+        }
+
+        .header__favorite-count {
           position: absolute;
-          top: -6px;
-          right: -10px;
-          background: #ff3b3b;
-          color: white;
-          font-size: 0.7rem;
-          width: 17px;
-          height: 17px;
-          border-radius: 50%;
+          top: -0.25rem;
+          right: -0.25rem;
           display: flex;
           align-items: center;
           justify-content: center;
-        }
-
-        &:hover {
-          color: #e6cf03;
-          transition: all 0.3s ease-in-out;
-        }
-
-        &-count {
-          position: absolute;
-          top: -0.3125rem;
-          right: -0.5rem;
-          color: white;
-          font-size: 0.6875rem;
-          font-weight: bold;
-          padding: 0.125rem 0.3125rem;
+          width: 1.15rem;
+          height: 1.15rem;
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: #fff;
+          background-color: #ff3b3b;
           border-radius: 50%;
         }
       }
