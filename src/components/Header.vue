@@ -11,6 +11,7 @@
             {{ link.label }}
           </router-link>
         </li>
+        <!-- <HeaderMenu /> -->
       </ul>
       <div class="header__burger" @click="toggleMenu">
         <i class="bi bi-list"></i>
@@ -61,6 +62,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '../store/cart'
 import { useFavoritesStore } from '../store/favorites'
+import HeaderMenu from '../components/HeaderMenu.vue'
 
 const store = useFavoritesStore()
 const cartStore = useCartStore()

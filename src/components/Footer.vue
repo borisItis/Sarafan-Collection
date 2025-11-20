@@ -59,7 +59,7 @@ const footerLinks = [
 ]
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .footer {
   width: 100%;
   padding: 1.875rem;
@@ -101,5 +101,37 @@ const footerLinks = [
   font-weight: 400;
   line-height: 105%;
   color: rgba(206, 206, 206, 1);
+}
+
+@media (max-width: 64rem) {
+  .footer__container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer__nav-title {
+    text-align: center;
+  }
+
+  .footer__nav-link {
+    text-align: center;
+  }
+}
+
+@media (max-width: 48rem) {
+  .footer__container {
+    margin-top: 2.5rem;
+    margin-bottom: 3.125rem;
+  }
+
+  .footer__nav-title {
+    margin-bottom: 1.25rem;
+  }
+}
+
+@media (max-width: 32rem) {
+  .footer__container {
+    margin-bottom: 1.875rem;
+  }
 }
 </style>

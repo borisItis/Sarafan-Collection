@@ -63,4 +63,22 @@ const favoriteProducts = computed(() =>
     color: rgba(45, 45, 45, 1);
   }
 }
+
+@media (max-width: 64rem) {
+  .favorites__page-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 48rem) {
+  .favorites__page-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 32rem) {
+  .favorites__page-cards {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
 </style>

@@ -22,22 +22,47 @@
               <p class="product__carousel-paragraph">{{ product.title }}</p>
               <p class="product__carousel-price">{{ product.price }}</p>
             </div>
-            <button class="product__carousel-favorite" @click="toggle">
-              <i class="bi" :class="isFav ? 'bi-heart-fill' : 'bi-heart'"></i>
-            </button>
           </div>
         </a>
+        <button class="product__carousel-favorite" @click="toggleFavorite(product.id)">
+          <svg
+            class="favorite-icon"
+            :class="{ active: isFavorite }"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 21s-6.2-4.4-9.3-8.3A6.2 6.2 0 0 1 4.5 3a6 6 0 0 1 7.5 1.3A6 6 0 0 1 19.5 3a6.2 6.2 0 0 1 1.8 9.7C18.2 16.6 12 21 12 21z"
+            />
+          </svg>
+        </button>
       </swiper-slide>
     </swiper>
   </section>
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
+import { useFavoritesStore } from '../store/favorites'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
+
+const store = useFavoritesStore()
+
+const toggleFavorite = (id) => {
+  store.toggleFavorite(id)
+}
+
+const productsFavorite = computed(() =>
+  productsFavorite.map((product) => ({
+    ...product,
+    isFavorite: store.isFavorite(product.id),
+  })),
+)
+
 import CollectionImage1 from '../assets/images/CollectionImage1.jpg'
 import CollectionImage2 from '../assets/images/CollectionImage2.jpg'
 import CollectionImage3 from '../assets/images/CollectionImage3.jpg'
@@ -199,17 +224,25 @@ const swiperBreakpoints = {
 
 .product__carousel-favorite {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 1.25rem;
-  color: rgba(45, 45, 45, 1);
+  top: 0.75rem;
+  right: 0.75rem;
   background: transparent;
   border: none;
   cursor: pointer;
   z-index: 3;
+  padding: 0;
 }
 
-.bi-heart-fill {
-  color: #ff3b3b;
+.product__carousel-favorite-icon {
+  fill: none;
+  stroke: rgba(45, 45, 45, 1);
+  transition:
+    fill 0.3s,
+    stroke 0.3s;
+}
+
+.product__carousel-favorite-icon.active {
+  fill: #ff3b3b;
+  stroke: #ff3b3b;
 }
 </style>
