@@ -1,124 +1,145 @@
 <template>
-  <!-- Только li элементы для вставки в ul -->
-  <li
-    v-for="item in menuItems"
-    :key="item.title"
-    class="header__menu-item"
-    @mouseenter="openMenu(item)"
-    @mouseleave="closeMenu"
-  >
-    <span class="header__menu-link">{{ item.title }}</span>
-
-    <!-- Выпадающий блок -->
-    <transition name="fade">
-      <div v-if="activeMenu === item" class="mega-dropdown">
-        <div class="mega-dropdown__content">
-          <!-- Левые колонки -->
-          <div class="mega-dropdown__columns">
-            <div class="column" v-for="(col, i) in item.columns" :key="i">
-              <router-link v-for="link in col" :key="link.text" :to="link.url" class="column__link">
-                {{ link.text }}
-              </router-link>
-            </div>
-          </div>
-
-          <!-- Правая картинка -->
-          <div class="mega-dropdown__image" v-if="item.image">
-            <img :src="item.image" alt="preview" />
-          </div>
+  <div class="dropdown" @mouseenter="open = true" @mouseleave="open = false">
+    <slot></slot>
+    <div class="dropdown__menu" v-if="open">
+      <div class="dropdown__content">
+        <div class="dropdown__columns">
+          <ul class="dropdown__list">
+            <li class="dropdown__item" v-for="category in left" :key="category">
+              <router-link :to="linkTo(category)" class="dropdown__link">{{
+                category
+              }}</router-link>
+            </li>
+          </ul>
+          <ul class="dropdown__list">
+            <li class="dropdown__item" v-for="category in right" :key="category">
+              <router-link :to="linkTo(category)" class="dropdown__link">{{
+                category
+              }}</router-link>
+            </li>
+          </ul>
+        </div>
+        <div class="dropdown__image-wrapper">
+          <img :src="ImageHeaderMenu" alt="" class="dropdown__image" />
         </div>
       </div>
-    </transition>
-  </li>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { fetchProducts } from '../services/api.js'
+import ImageHeaderMenu from '../assets/images/ImageMenu.jpg'
 
-const activeMenu = ref(null)
+const open = ref(false)
+const categories = ref([])
 
-const openMenu = (item) => {
-  activeMenu.value = item
-}
-const closeMenu = () => {
-  activeMenu.value = null
-}
-
-// Данные меню
-const menuItems = [
-  { title: 'Новинки', columns: [], image: '' },
-  {
-    title: 'Одежда',
-    columns: [
-      [
-        { text: 'Платья', url: '/catalog/dresses' },
-        { text: 'Пальто и тренчи', url: '/catalog/coats' },
-        { text: 'Пуховики', url: '/catalog/down' },
-        { text: 'Куртки и жилеты', url: '/catalog/jackets' },
-        { text: 'Деним', url: '/catalog/denim' },
-        { text: 'Блузы и топы', url: '/catalog/tops' },
-        { text: 'Брюки', url: '/catalog/pants' },
-        { text: 'Юбки', url: '/catalog/skirts' },
-      ],
-      [
-        { text: 'Рубашки', url: '/catalog/shirts' },
-        { text: 'Футболки', url: '/catalog/tshirts' },
-        { text: 'Свитеры', url: '/catalog/sweaters' },
-        { text: 'Толстовки', url: '/catalog/hoodies' },
-        { text: 'Комплекты', url: '/catalog/sets' },
-        { text: 'Комбинезоны', url: '/catalog/jumpsuits' },
-        { text: 'Шорты', url: '/catalog/shorts' },
-        { text: 'Купальники', url: '/catalog/swimwear' },
-      ],
-    ],
-    image: '/images/menu-photo.jpg',
-  },
-  { title: 'Аксессуары', columns: [], image: '' },
-  { title: 'SALE', columns: [], image: '' },
+const left = [
+  'Платья',
+  'Пальто и тренчи',
+  'Пуховики',
+  'Куртки и жилеты',
+  'Деним',
+  'Блузы и топы',
+  'Брюки',
+  'Юбки',
 ]
+
+const right = [
+  'Рубашки',
+  'Футболки',
+  'Свитеры',
+  'Толстовки',
+  'Комплекты',
+  'Комбинезоны',
+  'Шорты',
+  'Купальники',
+]
+
+async function loadProducts() {
+  const products = await fetchProducts()
+  categories.value = Array.from(new Set(products.map((p) => p.category)))
+}
+
+function linkTo(name) {
+  return { name: 'catalog', query: { category: name.toLowerCase() } }
+}
+
+onMounted(loadProducts)
 </script>
 
-<style scoped>
-/* пример стилей, можно заменить на свои */
-.header__menu-item {
+<style lang="scss" scoped>
+.dropdown {
   position: relative;
+
+  &__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 80rem;
+    background: #fff;
+    padding: 2.5rem 3.75rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    animation: fade 0.25s ease;
+    z-index: 1000;
+  }
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 70rem;
+    gap: 8.125rem;
+  }
+
+  &__columns {
+    display: flex;
+    flex: 1;
+    gap: 8.125rem;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    margin-bottom: 14px;
+  }
+
+  &__link {
+    font-size: 1rem;
+    color: rgba(45, 45, 45, 1);
+    text-decoration: none;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.6;
+      color: #e6cf03;
+    }
+  }
+
+  &__image-wrapper {
+    max-width: 26.875rem;
+    flex-shrink: 0;
+  }
+
+  &__image {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+  }
 }
 
-.mega-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  display: flex;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  z-index: 1000;
-}
-
-.mega-dropdown__columns {
-  display: flex;
-  gap: 2rem;
-}
-
-.column__link {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #333;
-  text-decoration: none;
-}
-
-.mega-dropdown__image img {
-  max-width: 200px;
-  height: auto;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

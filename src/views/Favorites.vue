@@ -3,6 +3,9 @@
     <p class="favorites__page-breadcrumbs"><router-link to="/">Главная</router-link> / Избранное</p>
     <h1 class="favorites__page-title">Избранное</h1>
     <div class="favorites__page-cards">
+      <p class="favorites__page-empty" v-if="favoriteProducts.length === 0">
+        Нет избранных товаров
+      </p>
       <ProductCard
         v-for="item in favoriteProducts"
         :key="item.id"
@@ -10,9 +13,9 @@
         :title="item.title"
         :price="item.price"
         :image="item.image"
+        :product="product"
       />
     </div>
-    <p class="favorites__page-empty" v-if="favoriteProducts.length === 0">Нет избранных товаров</p>
   </section>
 </template>
 

@@ -3,15 +3,17 @@
     <nav class="header__nav">
       <ul :class="['header__menu', { 'header__menu--active': menuOpen }]">
         <li v-for="link in links" :key="link.label" class="header__menu-item">
-          <router-link
-            class="header__menu-link"
-            :to="link.to"
-            active-class="header__menu-link--active"
-          >
-            {{ link.label }}
-          </router-link>
+          <HeaderMenu>
+            <router-link
+              to="/catalog?category=clothes"
+              class="header__menu-link"
+              :to="link.to"
+              active-class="header__menu-link--active"
+            >
+              {{ link.label }}
+            </router-link>
+          </HeaderMenu>
         </li>
-        <!-- <HeaderMenu /> -->
       </ul>
       <div class="header__burger" @click="toggleMenu">
         <i class="bi bi-list"></i>
@@ -69,7 +71,6 @@ const cartStore = useCartStore()
 const menuOpen = ref(false)
 const search = ref('')
 const router = useRouter()
-const cartCount = computed(() => (Array.isArray(cartStore.cart) ? cartStore.cart.length : 0))
 const isFavorite = computed(() => store.favorites.length > 0)
 
 const links = [
@@ -271,6 +272,54 @@ function onSearch() {
 
   .header__menu {
     gap: 0.75rem;
+  }
+}
+
+@media (max-width: 38rem) {
+  .header__nav {
+    padding: 0.5rem 1rem;
+  }
+
+  .header__nav-right {
+    gap: 0.5rem;
+  }
+
+  .header__nav-logo {
+    &-img {
+      img {
+        width: 7rem;
+      }
+    }
+  }
+  .header__menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    width: 50%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.9);
+    flex-direction: column;
+    padding: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+
+    &--active {
+      display: flex;
+    }
+
+    &-item {
+      text-align: center;
+    }
+
+    &-link {
+      display: block;
+      padding: 0.75rem 0;
+    }
+  }
+  .header__burger {
+    display: block;
+    order: 1;
   }
 }
 

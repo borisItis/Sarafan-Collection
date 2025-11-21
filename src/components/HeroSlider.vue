@@ -12,7 +12,7 @@
           <div class="hero__content">
             <p class="hero__subtitle">{{ slide.subtitle }}</p>
             <h1 class="hero__title">{{ slide.title }}</h1>
-            <router-link :to="{ name: 'catalog' }" class="hero__button">
+            <router-link @click="goToCatalog" :to="{ name: 'catalog' }" class="hero__button">
               Перейти в каталог
             </router-link>
           </div>
@@ -23,6 +23,7 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -36,6 +37,12 @@ const props = defineProps({
     required: true,
   },
 })
+
+const router = useRouter()
+
+function goToCatalog() {
+  router.push({ name: 'catalog' })
+}
 </script>
 
 <style lang="scss">

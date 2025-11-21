@@ -105,16 +105,17 @@ const footerLinks = [
 
 @media (max-width: 64rem) {
   .footer__container {
-    flex-direction: column;
     align-items: center;
   }
 
   .footer__nav-title {
     text-align: center;
+    font-size: 1rem;
   }
 
   .footer__nav-link {
     text-align: center;
+    font-size: 1rem;
   }
 }
 
@@ -126,12 +127,29 @@ const footerLinks = [
 
   .footer__nav-title {
     margin-bottom: 1.25rem;
+    font-size: 0.825rem;
+  }
+
+  .footer__nav-link {
+    font-size: 0.625rem;
   }
 }
 
 @media (max-width: 32rem) {
   .footer__container {
     margin-bottom: 1.875rem;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer__nav-title {
+    margin-bottom: 0.938rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+  }
+
+  .footer__copyright {
+    font-size: 0.525rem;
   }
 }
 </style>
