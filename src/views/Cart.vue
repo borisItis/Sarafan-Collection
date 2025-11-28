@@ -1,40 +1,93 @@
 <template>
-  <div>
-    <Header />
-    <h1>Корзина</h1>
-    <div v-if="cart.items.length === 0">Ваша корзина пуста</div>
-    <div v-else>
-      <div v-for="it in cart.items" :key="it.product.id" class="cart-item">
-        <img :src="it.product.image" />
-        <div>{{ it.product.name }}</div>
-        <input type="number" v-model.number="it.qty" @change="update(it)" min="1" />
-        <button @click="remove(it.product.id)">Удалить</button>
-      </div>
-      <div class="total">Итого: {{ cart.total }}</div>
+  <section class="cart__page">
+    <p class="cart__page-breadcrumbs"><router-link to="/">Главная</router-link> / Корзина</p>
+    <h1 class="cart__page-title">Корзина</h1>
+    <div class="cart__page-cards">
+      <p class="cart__page-empty" v-if="cartProducts.length === 0">Корзина пуста</p>
+      <ProductCard
+        v-for="item in cartProducts"
+        :key="item.id"
+        :id="item.id"
+        :title="item.title"
+        :price="item.price"
+        :image="item.image"
+        :product="product"
+      />
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
-import Header from '../components/Header.vue'
+import { products } from '../store/products'
+import ProductCard from '../components/ProductCard.vue'
 import { useCartStore } from '../store/cart'
 
 export default {
-  components: { Header },
+  components: {
+    ProductCard,
+  },
   setup() {
-    const cart = useCartStore()
-
-    function update(it) {
-      cart.updateQty(it.product.id, it.qty)
+    const store = useCartStore()
+    return {
+      products,
+      store,
+      cartProducts: computed(() => store.cart),
     }
-
-    function remove(id) {
-      cart.remove(id)
-    }
-
-    return { cart, update, remove }
   },
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.cart__page {
+  width: 100%;
+  padding: 1.875rem;
+  margin-top: 7.5rem;
+  &-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.875rem;
+  }
+  &-title {
+    font-size: 1.563rem;
+    font-weight: 400;
+    margin-bottom: 3.125rem;
+    color: rgba(45, 45, 45, 1);
+  }
+  &-breadcrumbs {
+    font-size: 0.813rem;
+    margin-bottom: 0.625rem;
+    color: rgba(45, 45, 45, 1);
+    font-weight: 400;
+
+    a {
+      color: #666;
+      text-decoration: none;
+    }
+  }
+
+  &-empty {
+    font-size: 1.563rem;
+    font-weight: 400;
+    margin-bottom: 3.125rem;
+    color: rgba(45, 45, 45, 1);
+  }
+}
+
+@media (max-width: 64rem) {
+  .favorites__page-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 48rem) {
+  .favorites__page-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 32rem) {
+  .favorites__page-cards {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+</style>

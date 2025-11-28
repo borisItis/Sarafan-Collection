@@ -1,5 +1,6 @@
 <template>
   <div class="product__card">
+    <slot></slot>
     <button class="product__card-favorite" @click="toggle">
       <svg
         class="favorite-icon"
@@ -14,27 +15,38 @@
       </svg>
     </button>
     <img :src="image" :alt="title" class="product__card-image" />
-    <h3 class="product__card-title">{{ title }}</h3>
-    <p class="product__card-price">{{ price }} ₽</p>
+    <h2 class="product__card-title">{{ title }}</h2>
+    <p class="product__card-price">${{ price }}</p>
+    <button v-if="showAddToCart" class="product__card-button" @click="addToCart(product)">
+      Добавить в корзину
+    </button>
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import { useFavoritesStore } from '../store/favorites'
+import { useCartStore } from '../store/cart'
 
+const cartStore = useCartStore()
 const store = useFavoritesStore()
 const props = defineProps({
   id: Number,
   title: String,
   price: Number,
   image: String,
+  showAddToCart: Boolean,
+  product: Object,
 })
 
 const isFavorite = computed(() => store.isFavorite(props.id))
 
 function toggle() {
   store.toggleFavorite(props.id)
+}
+
+function addToCart(product) {
+  cartStore.addToCart(product)
 }
 </script>
 
@@ -68,6 +80,16 @@ function toggle() {
     font-weight: 400;
     color: rgba(45, 45, 45, 1);
     margin-top: 0.5rem;
+  }
+
+  &-button {
+    border: none;
+    background-color: #ff3b3b;
+    color: #fff;
+    padding: 0.938rem 1.875rem;
+    font-size: 0.938rem;
+    font-weight: 400;
+    cursor: pointer;
   }
 
   &-favorite {

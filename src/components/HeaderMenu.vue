@@ -6,16 +6,22 @@
         <div class="dropdown__columns">
           <ul class="dropdown__list">
             <li class="dropdown__item" v-for="category in left" :key="category">
-              <router-link :to="linkTo(category)" class="dropdown__link">{{
-                category
-              }}</router-link>
+              <router-link
+                :to="{ name: 'catalog', query: { category: category } }"
+                class="dropdown__link"
+              >
+                {{ category }}
+              </router-link>
             </li>
           </ul>
           <ul class="dropdown__list">
             <li class="dropdown__item" v-for="category in right" :key="category">
-              <router-link :to="linkTo(category)" class="dropdown__link">{{
-                category
-              }}</router-link>
+              <router-link
+                :to="{ name: 'catalog', query: { category: category } }"
+                class="dropdown__link"
+              >
+                {{ category }}
+              </router-link>
             </li>
           </ul>
         </div>
