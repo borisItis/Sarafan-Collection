@@ -59,6 +59,11 @@ function addToCart(product) {
   max-width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 0.5rem;
+
+  &:hover {
+    cursor: pointer;
+  }
 
   &-image {
     width: 100%;

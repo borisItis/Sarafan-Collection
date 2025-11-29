@@ -45,13 +45,16 @@
             <span class="header__favorite-count">{{ store.favorites.length }}</span>
           </router-link>
           <router-link to="/cart" class="header__nav-right-icon" title="Корзина">
-            <i class="bi bi-cart"></i>
-            <span v-if="cartCount > 0" class="header__nav-right-icon-count">
-              {{ cartCount }}
-            </span>
+            <img
+              src="../assets/images/cart.svg"
+              alt="Cart"
+              class="header__favorite-icon"
+              :class="{ active: cartStore.cart.length > 0 }"
+            />
+            <span class="header__cart-count">{{ cartStore.cart.length }}</span>
           </router-link>
           <router-link to="/profile" class="header__nav-right-icon" title="Профиль">
-            <i class="bi bi-person"></i>
+            <img src="../assets/images/person.svg" alt="Profile" class="header__profile-icon" />
           </router-link>
         </div>
       </div>
@@ -207,6 +210,41 @@ function onSearch() {
           background-color: #ff3b3b;
           border-radius: 50%;
         }
+
+        .header__cart-icon {
+          width: 1.5rem;
+          height: 1.5rem;
+          transition: filter 0.3s;
+
+          &.active {
+            filter: none;
+          }
+        }
+        .header__cart-count {
+          position: absolute;
+          top: -0.25rem;
+          right: -0.25rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 1.15rem;
+          height: 1.15rem;
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: #fff;
+          background-color: #ff3b3b;
+          border-radius: 50%;
+        }
+
+        .header__profile-icon {
+          width: 1.5rem;
+          height: 1.5rem;
+          transition: filter 0.3s;
+
+          &.active {
+            filter: none;
+          }
+        }
       }
     }
   }
@@ -275,6 +313,31 @@ function onSearch() {
   }
 }
 
+@media (max-width: 58.75rem) {
+  .header__nav-logo {
+    &-img {
+      img {
+        width: 8.375rem;
+      }
+    }
+
+    &-search-wrapper {
+      i {
+        display: block;
+        cursor: pointer;
+      }
+    }
+
+    &-search {
+      display: none;
+    }
+
+    &-icon {
+      font-size: 1.25rem;
+    }
+  }
+}
+
 @media (max-width: 38rem) {
   .header__nav {
     padding: 0.5rem 1rem;
@@ -289,6 +352,19 @@ function onSearch() {
       img {
         width: 7rem;
       }
+    }
+    &-search-wrapper {
+      i {
+        display: none;
+      }
+    }
+
+    &-search {
+      display: none;
+    }
+
+    &-icon {
+      font-size: 1.25rem;
     }
   }
   .header__menu {

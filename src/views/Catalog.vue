@@ -2,7 +2,7 @@
   <section class="catalog">
     <p class="сatalog__breadcrumbs"><router-link to="/">Главная</router-link> / Каталог</p>
     <h1 class="catalog__title">Каталог</h1>
-    <p v-if="category" class="catalog__subtitle">Фильтр по категории: {{ category }}</p>
+    <p v-if="category" class="catalog__subtitle">Фильтр по категории: {{ store.category }}</p>
     <div class="catalog-grid">
       <ProductCard
         v-for="product in store.filteredProducts"
@@ -24,33 +24,20 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { fetchProducts } from '../services/api.js'
 import ProductCard from '../components/ProductCard.vue'
 import { useProductsStore } from '../store/products.js'
 
 const route = useRoute()
 const store = useProductsStore()
 
-const products = ref([])
-const filteredProducts = ref([])
-const category = ref('')
-
-function filterByCategory(cat) {
-  category.value = cat || ''
-  filteredProducts.value = cat ? products.value.filter((p) => p.category === cat) : products.value
-}
-
-async function loadProducts() {
-  products.value = await fetchProducts()
-  filterByCategory(route.query.category)
-}
-
 onMounted(() => store.loadProducts())
 
 watch(
   () => route.query.category,
-  (newCategory) => filterByCategory(newCategory),
+  (newCat) => store.filterByCategory(newCat),
 )
+
+function addToCart(product) {}
 </script>
 
 <style scoped lang="scss">

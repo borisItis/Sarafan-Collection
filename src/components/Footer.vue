@@ -8,21 +8,28 @@
         <h4 class="footer__nav-title">{{ section.title }}</h4>
         <ul class="footer__nav-list">
           <li v-for="link in section.links" :key="link.text">
-            <router-link
-              :to="link.url"
-              :class="{ 'is-placeholder': link.url === '#' }"
-              @click.prevent="link.url === '#' && $event.preventDefault()"
+            <a
+              v-if="link.external"
+              :href="link.url"
+              target="_blank"
+              rel="noopener noreferrer"
               class="footer__nav-link"
             >
               {{ link.text }}
+            </a>
+            <router-link v-else-if="link.url !== '#'" :to="link.url" class="footer__nav-link">
+              {{ link.text }}
             </router-link>
+            <span v-else class="footer__nav-link is-placeholder">
+              {{ link.text }}
+            </span>
           </li>
         </ul>
       </div>
     </div>
     <div class="footer__copyright">
       <p class="footer__copyright-text">
-        Все права защищены.Пользовательское соглашение.Политика конфиденциальности <br />
+        Все права защищены. Пользовательское соглашение. Политика конфиденциальности <br />
         © {{ new Date().getFullYear() }} sarafancollection.ru
       </p>
     </div>
@@ -50,10 +57,14 @@ const footerLinks = [
   {
     title: 'Следите за нами',
     links: [
-      { text: 'TikTok', url: '#' },
-      { text: 'Vk', url: '#' },
-      { text: 'Telegram', url: '#' },
-      { text: 'Pinterest', url: '#' },
+      {
+        text: 'TikTok',
+        url: 'https://www.tiktok.com/@sarafan.collection?is_from_webapp=1&sender_device=pc',
+        external: true,
+      },
+      { text: 'Vk', url: 'https://vk.com/sarafan_collection', external: true },
+      { text: 'Telegram', url: 'https://t.me/sarafancollection', external: true },
+      { text: 'Pinterest', url: 'https://pin.it/1A64uYMrt', external: true },
     ],
   },
 ]

@@ -13,22 +13,29 @@
         :title="item.title"
         :price="item.price"
         :image="item.image"
-        :product="product"
+        :product="item"
       />
     </div>
   </section>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useFavoritesStore } from '../store/favorites'
-import { products } from '../store/products'
+import { computed, onMounted } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
+import { useProductsStore } from '../store/products'
+import { useFavoritesStore } from '../store/favorites'
 
-const store = useFavoritesStore()
-const favoriteProducts = computed(() =>
-  products.filter((product) => store.favorites.includes(product.id)),
-)
+const productsStore = useProductsStore()
+const favoritesStore = useFavoritesStore()
+
+onMounted(() => {
+  productsStore.loadProducts()
+})
+
+const allProducts = computed(() => productsStore.filteredProducts)
+const favoriteProducts = computed(() => {
+  return allProducts.value.filter((p) => favoritesStore.favorites.includes(p.id))
+})
 </script>
 
 <style scoped lang="scss">

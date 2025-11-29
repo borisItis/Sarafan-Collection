@@ -11,30 +11,30 @@
         :title="item.title"
         :price="item.price"
         :image="item.image"
-        :product="product"
+        :product="item"
       />
     </div>
   </section>
 </template>
 
-<script>
-import { products } from '../store/products'
+<script setup>
+import { computed, onMounted } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
 import { useCartStore } from '../store/cart'
+import { useProductsStore } from '../store/products'
 
-export default {
-  components: {
-    ProductCard,
-  },
-  setup() {
-    const store = useCartStore()
-    return {
-      products,
-      store,
-      cartProducts: computed(() => store.cart),
-    }
-  },
-}
+const cartStore = useCartStore()
+const productsStore = useProductsStore()
+
+onMounted(() => {
+  productsStore.loadProducts()
+})
+
+const cartProducts = computed(() => {
+  return cartStore.cart
+    .map((itemId) => productsStore.products.find((p) => p.id === itemId))
+    .filter(Boolean)
+})
 </script>
 
 <style scoped lang="scss">
