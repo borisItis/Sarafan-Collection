@@ -12,6 +12,8 @@
         :price="item.price"
         :image="item.image"
         :product="item"
+        :showAddToCart="false"
+        :isInCartPage="true"
       />
     </div>
   </section>
@@ -27,14 +29,10 @@ const cartStore = useCartStore()
 const productsStore = useProductsStore()
 
 onMounted(() => {
-  productsStore.loadProducts()
+  cartStore.loadCart()
 })
 
-const cartProducts = computed(() => {
-  return cartStore.cart
-    .map((itemId) => productsStore.products.find((p) => p.id === itemId))
-    .filter(Boolean)
-})
+const cartProducts = computed(() => cartStore.cart)
 </script>
 
 <style scoped lang="scss">

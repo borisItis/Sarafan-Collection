@@ -1,6 +1,5 @@
 <template>
-  <div class="product__card">
-    <slot></slot>
+  <div class="product__card" @click="$emit('click')">
     <button class="product__card-favorite" @click="toggle">
       <svg
         class="favorite-icon"
@@ -14,12 +13,25 @@
         />
       </svg>
     </button>
-    <img :src="image" :alt="title" class="product__card-image" />
-    <h2 class="product__card-title">{{ title }}</h2>
-    <p class="product__card-price">${{ price }}</p>
-    <button v-if="showAddToCart" class="product__card-button" @click="addToCart(product)">
-      Добавить в корзину
-    </button>
+    <img :src="product.image" :alt="product.title" class="product__card-image" />
+    <h2 class="product__card-title">{{ product.title }}</h2>
+    <p class="product__card-price">{{ product.price }} ₽</p>
+    <div class="product__card-buttons">
+      <button
+        v-if="showAddToCart && !isInCartPage"
+        class="product__card-button"
+        @click.stop="addToCart"
+      >
+        Добавить в корзину
+      </button>
+      <button
+        v-if="isInCartPage"
+        class="product__card-button product__card-button--remove"
+        @click.stop="removeFromCart"
+      >
+        Удалить из корзины
+      </button>
+    </div>
   </div>
 </template>
 
@@ -28,25 +40,27 @@ import { computed } from 'vue'
 import { useFavoritesStore } from '../store/favorites'
 import { useCartStore } from '../store/cart'
 
-const cartStore = useCartStore()
 const store = useFavoritesStore()
+const cartStore = useCartStore()
+
 const props = defineProps({
-  id: Number,
-  title: String,
-  price: Number,
-  image: String,
-  showAddToCart: Boolean,
-  product: Object,
+  product: { type: Object, required: true },
+  showAddToCart: { type: Boolean, default: true },
+  isInCartPage: Boolean,
 })
 
-const isFavorite = computed(() => store.isFavorite(props.id))
+const isFavorite = computed(() => store.isFavorite(props.product.id))
 
 function toggle() {
-  store.toggleFavorite(props.id)
+  store.toggleFavorite(props.product.id)
 }
 
-function addToCart(product) {
-  cartStore.addToCart(product)
+function addToCart() {
+  cartStore.addToCart(props.product)
+}
+
+function removeFromCart() {
+  cartStore.removeFromCart(props.product.id)
 }
 </script>
 
@@ -87,14 +101,42 @@ function addToCart(product) {
     margin-top: 0.5rem;
   }
 
+  .product__card-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.563rem;
+  }
+
   &-button {
-    border: none;
-    background-color: #ff3b3b;
-    color: #fff;
-    padding: 0.938rem 1.875rem;
-    font-size: 0.938rem;
+    border: 1px solid rgba(45, 45, 45, 1);
+    background: rgba(255, 255, 255, 1);
+    color: rgba(45, 45, 45, 1);
     font-weight: 400;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
     cursor: pointer;
+
+    &:hover {
+      background: rgba(45, 45, 45, 1);
+      color: #fff;
+      transition: 0.3s ease;
+    }
+  }
+
+  .catalog-card__button--remove {
+    border: 1px solid rgba(45, 45, 45, 1);
+    background: rgba(255, 255, 255, 1);
+    color: rgba(45, 45, 45, 1);
+    font-weight: 400;
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(45, 45, 45, 1);
+      color: #fff;
+      transition: 0.3s ease;
+    }
   }
 
   &-favorite {

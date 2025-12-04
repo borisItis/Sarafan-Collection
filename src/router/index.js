@@ -5,6 +5,7 @@ import Cart from '../views/Cart.vue'
 import Profile from '../views/Profile.vue'
 import Favorites from '../views/Favorites.vue'
 import About from '../views/About.vue'
+import ProductDetail from '../views/ProductDetail.vue'
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -13,6 +14,7 @@ const routes = [
   { path: '/profile', name: 'profile', component: Profile },
   { path: '/favorites', name: 'favorites', component: Favorites },
   { path: '/about', name: 'about', component: About },
+  { path: '/product/:id', name: 'ProductDetail', component: ProductDetail },
 ]
 
 const router = createRouter({

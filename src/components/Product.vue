@@ -7,9 +7,7 @@
           v-for="(item, index) in products"
           :key="item.id"
           :id="item.id"
-          :title="item.title"
-          :price="item.price"
-          :image="item.image"
+          :product="item"
           class="product__card"
           :class="{ 'product__card--large': index >= 4 }"
         />

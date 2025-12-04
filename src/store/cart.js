@@ -7,14 +7,32 @@ export const useCartStore = defineStore('cart', {
   }),
 
   actions: {
-    add(product) {
-      const item = this.cart.find((p) => p.id === product.id)
-      if (item) item.qty++
-      else this.cart.push({ ...product, qty: 1 })
+    loadCart() {
+      const savedCart = localStorage.getItem('cart')
+      if (savedCart) {
+        this.cart = JSON.parse(savedCart)
+      }
     },
 
-    remove(id) {
-      this.cart = this.cart.filter((p) => p.id !== id)
+    addToCart(product) {
+      if (!this.cart.find((item) => item.id === product.id)) {
+        this.cart.push(product)
+        this.saveCart()
+      }
+    },
+
+    removeFromCart(productId) {
+      this.cart = this.cart.filter((item) => item.id !== productId)
+      this.saveCart()
+    },
+
+    clearCart() {
+      this.cart = []
+      this.saveCart()
+    },
+
+    saveCart() {
+      localStorage.setItem('cart', JSON.stringify(this.cart))
     },
   },
 })
