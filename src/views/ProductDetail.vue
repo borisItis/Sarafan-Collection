@@ -106,9 +106,9 @@ $primary-color: #2d2d2d;
 $accent-color: #cc2c2c;
 
 .product-page {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 30px;
+  width: 100%;
+  padding: 1.875rem;
+  margin-top: 7.5rem;
 
   &__breadcrumbs {
     font-size: 14px;

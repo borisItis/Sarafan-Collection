@@ -1,5 +1,5 @@
 <template>
-  <div class="product__card" @click="$emit('click')">
+  <div class="product__card" @click="$emit('click', product.id)">
     <button class="product__card-favorite" @click="toggle">
       <svg
         class="favorite-icon"

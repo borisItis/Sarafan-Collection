@@ -6,19 +6,20 @@
     </p>
     <h1 class="catalog-page__title">Каталог</h1>
     <div class="catalog-page__grid">
-      <template v-for="(product, index) in visibleProducts" :key="product.id">
+      <template v-for="(item, index) in visibleProducts">
         <ProductCard
           v-if="(index + 1) % 3 !== 0"
-          :product="product"
-          :showAddToCart="true"
-          :isInCartPage="false"
-          @click="goToProduct(item.id)"
+          :key="item.id"
+          :product="item"
           class="catalog-page__card"
+          @click="goToProduct(item.id)"
         />
         <ProductCardImage
           v-else
-          :image="product.image"
+          :key="'big-' + item.id"
+          :image="item.image"
           class="catalog-page__card catalog-page__card--big"
+          @click="goToProduct(item.id)"
         />
       </template>
     </div>
@@ -30,20 +31,22 @@
 
 <script setup>
 import { ref, watch, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import ProductCard from '../components/ProductCard.vue'
 import ProductCardImage from '../components/ProductCardImage.vue'
 import { useProductsStore } from '../store/products.js'
 
 const route = useRoute()
+const router = useRouter()
 const store = useProductsStore()
-const visibleCount = ref(6)
 
+const visibleCount = ref(6)
 const visibleProducts = computed(() => store.filteredProducts.slice(0, visibleCount.value))
 
 function loadMore() {
   visibleCount.value += 6
 }
+
 watch(
   () => route.query.category,
   (newCat) => {
@@ -53,12 +56,9 @@ watch(
   { immediate: true },
 )
 
-function addToCart(product) {
-  console.log('Добавлено в корзину:', product.title)
-}
-
-function goToProduct(productId) {
-  router.push({ name: 'ProductDetail', params: { id: productId } })
+function goToProduct(id) {
+  if (!id) return
+  router.push(`/product/${id}`)
 }
 </script>
 
@@ -74,32 +74,27 @@ function goToProduct(productId) {
   margin-bottom: 0.625rem;
   color: rgba(45, 45, 45, 1);
   font-weight: 400;
-}
 
-.catalog-page__breadcrumbs a {
-  color: #666;
-  text-decoration: none;
+  a {
+    color: #666;
+    text-decoration: none;
+  }
 }
 
 .catalog-page__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(29.375rem, max-content));
+  grid-template-columns: repeat(3, 1fr);
   gap: 3.125rem;
-  justify-content: center;
+  justify-items: center;
 }
 
 .catalog-page__card {
-  display: block;
-  width: 100%;
   max-width: 29.375rem;
-  margin-bottom: 0;
-  break-inside: avoid;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .catalog-page__card--big {
   grid-column: 1 / -1;
-  width: 100%;
 
   img {
     width: 100%;
@@ -124,7 +119,6 @@ function goToProduct(productId) {
 .catalog-card__title {
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.13;
   margin-bottom: 1.5rem;
   color: rgba(45, 45, 45, 1);
 }
@@ -132,7 +126,6 @@ function goToProduct(productId) {
 .catalog-card__price {
   font-weight: 400;
   font-size: 0.938rem;
-  line-height: 1.13;
   margin-bottom: 1.5rem;
   color: rgba(45, 45, 45, 1);
 }
@@ -142,13 +135,12 @@ function goToProduct(productId) {
   color: #fff;
   border: none;
   padding: 10px 20px;
-  text-align: left;
   cursor: pointer;
   transition: background-color 0.2s;
-}
 
-.catalog-card__button:hover {
-  background-color: rgba(45, 45, 45, 0.8);
+  &:hover {
+    background-color: rgba(45, 45, 45, 0.8);
+  }
 }
 
 .catalog-page__more {
@@ -171,10 +163,9 @@ function goToProduct(productId) {
   }
 }
 
-/* Адаптив */
 @media (max-width: 1200px) {
   .catalog-page__grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -185,6 +176,11 @@ function goToProduct(productId) {
 
   .catalog-page__grid {
     grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .catalog-page__card--big {
+    grid-column: 1 / -1;
   }
 }
 </style>
