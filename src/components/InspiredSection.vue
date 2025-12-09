@@ -77,5 +77,48 @@ const InspiredImage = [InspiredImage1, InspiredImage2]
       object-fit: cover;
     }
   }
+
+  @media (max-width: 30rem) {
+    padding: 1rem;
+    margin-top: 3rem;
+
+    &__top {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      text-align: center;
+    }
+
+    &__title {
+      text-align: left;
+      font-size: 1.4rem;
+    }
+
+    &__description {
+      p {
+        max-width: 100%;
+        font-size: 0.95rem;
+        text-align: left;
+      }
+    }
+
+    &__image {
+      grid-template-columns: (2, 1fr);
+      gap: 1.25rem;
+    }
+
+    &__link {
+      display: block;
+      text-align: left;
+    }
+
+    &__image-left {
+      width: 100%;
+      height: auto;
+    }
+    &__image-right {
+      width: 75%;
+      height: auto;
+    }
+  }
 }
 </style>

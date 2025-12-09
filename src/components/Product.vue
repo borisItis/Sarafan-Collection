@@ -8,7 +8,6 @@
           :key="item.id"
           :id="item.id"
           :product="item"
-          class="product__card"
           :class="{ 'product__card--large': index >= 4 }"
         />
       </div>
@@ -56,11 +55,86 @@ const products = [
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   justify-content: center;
+  align-items: start;
   gap: 1.875rem;
 }
 
 .product__card-cards > .product__card--large {
   grid-column: span 2;
   height: auto;
+}
+
+@media (max-width: 64rem) {
+  .product__card-cards {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .product__card-title {
+    font-size: 1.45rem;
+  }
+}
+
+@media (max-width: 48rem) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  .product__card-title {
+    font-size: 1.35rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .product__card-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .product__card--large {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 38.125rem) {
+  .product__card-title {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .product__card-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 30rem) {
+  .container {
+    padding: 1rem;
+  }
+
+  .product__card-title {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+  }
+
+  .product__card-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .product__card--large {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 20rem) {
+  .product__card-title {
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .product__card-cards {
+    gap: 0.8rem;
+  }
 }
 </style>

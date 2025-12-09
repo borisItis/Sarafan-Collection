@@ -71,21 +71,15 @@ const cartProducts = computed(() => cartStore.cart)
   }
 }
 
-@media (max-width: 64rem) {
-  .favorites__page-cards {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 48rem) {
-  .favorites__page-cards {
+@media screen and (max-width: 1024px) {
+  .cart__page-cards {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 32rem) {
-  .favorites__page-cards {
-    grid-template-columns: repeat(1, 1fr);
+@media screen and (max-width: 768px) {
+  .cart__page-cards {
+    grid-template-columns: 1fr;
   }
 }
 </style>

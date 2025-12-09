@@ -18,6 +18,8 @@
           v-else
           :key="'big-' + item.id"
           :image="item.image"
+          :title="item.title"
+          :price="item.price"
           class="catalog-page__card catalog-page__card--big"
           @click="goToProduct(item.id)"
         />
@@ -83,7 +85,7 @@ function goToProduct(id) {
 
 .catalog-page__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 3.125rem;
   justify-items: center;
 }

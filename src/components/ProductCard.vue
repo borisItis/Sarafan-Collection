@@ -1,6 +1,6 @@
 <template>
   <div class="product__card" @click="$emit('click', product.id)">
-    <button class="product__card-favorite" @click="toggle">
+    <button class="product__card-favorite" @click.stop="toggle">
       <svg
         class="favorite-icon"
         :class="{ active: isFavorite }"
@@ -161,6 +161,10 @@ function removeFromCart() {
       fill: #ff3b3b;
       stroke: #ff3b3b;
     }
+  }
+  @media (max-width: 30rem) {
+    width: 100%;
+    max-width: 100%;
   }
 }
 </style>
