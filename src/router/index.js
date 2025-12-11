@@ -18,8 +18,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
-  history: createWebHistory('/https://github.com/borisItis/Sarafan-Collection.git/'),
+  history: createWebHistory('/Sarafan-Collection/'),
   routes,
 })
 
