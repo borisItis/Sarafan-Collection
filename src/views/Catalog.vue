@@ -6,6 +6,14 @@
     </p>
     <h1 class="catalog-page__title">Каталог</h1>
     <div class="catalog-page__grid">
+      <span>Сортировать:</span>
+      <select @change="products.sortProducts($event.target.value)" class="catalog-page__select">
+        <option value="default">По умолчанию</option>
+        <option value="price-asc">Цена: по возрастанию</option>
+        <option value="price-desc">Цена: по убыванию</option>
+        <option value="newest">Новинки</option>
+        <option value="popular">Популярное</option>
+      </select>
       <template v-for="(item, index) in visibleProducts">
         <ProductCard
           v-if="(index + 1) % 3 !== 0"
@@ -163,6 +171,27 @@ function goToProduct(id) {
   &:hover {
     background: #424242;
   }
+}
+
+.catalog-page__select {
+  padding: 6px 30px 6px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff
+    url("data:image/svg+xml;utf8,<svg fill='black' height='10' width='10' xmlns='http://www.w3.org/2000/svg'><polygon points='0,0 10,0 5,6'/></svg>")
+    no-repeat right 10px center;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.catalog-page__select:hover {
+  border-color: #999;
+}
+
+.catalog-page__select:focus {
+  border-color: #333;
 }
 
 @media (max-width: 1200px) {

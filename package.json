@@ -2,6 +2,7 @@
   "name": "sarafan-collection",
   "version": "0.0.0",
   "private": true,
+  "homepage": "https://borisitis.github.io/Sarafan-Collection/",
   "type": "module",
   "engines": {
     "node": "^20.19.0 || >=22.12.0"

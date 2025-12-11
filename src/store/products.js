@@ -12,7 +12,14 @@ import img8 from '../assets/images/CollectionImage8.jpg'
 import img9 from '../assets/images/CollectionImage9.jpg'
 
 export const mockProducts = [
-  { id: 1, image: img1, title: 'Платье в полоску с запахом', price: '6 999 руб.' },
+  {
+    id: 1,
+    image: img1,
+    title: 'Платье в полоску с запахом',
+    price: '6 999 руб.',
+    createdAt: 20250120,
+    popularity: 135,
+  },
   { id: 2, image: img2, title: 'Объемный пиджак', price: '12 499 руб.' },
   { id: 3, image: img3, title: 'Комбинезон с принтом', price: '6 999 руб.' },
   { id: 4, image: img4, title: 'Атласный топ-комбинация', price: '2 799 руб.' },
@@ -29,46 +36,80 @@ export const useProductsStore = defineStore('products', {
     filteredProducts: [...mockProducts],
     isLoaded: false,
     _loadingPromise: null,
+    sortType: 'default',
   }),
 
   actions: {
     loadProducts() {
       if (this.isLoaded) return Promise.resolve()
       if (this._loadingPromise) return this._loadingPromise
-
       this._loadingPromise = this._fetchProducts()
       return this._loadingPromise
     },
 
+    _price(product) {
+      if (!product.price) return 0
+      return Number(product.price.replace(/\s+/g, '').replace('руб.', '')) || 0
+    },
+
+    sortProducts(type) {
+      this.sortType = type
+      let sorted = [...this.filteredProducts]
+      switch (type) {
+        case 'price-asc':
+          sorted.sort((a, b) => this._price(a) - this._price(b))
+          break
+        case 'price-desc':
+          sorted.sort((a, b) => this._price(b) - this._price(a))
+          break
+        case 'newest':
+          sorted.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+          break
+        case 'popular':
+          sorted.sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+          break
+        default:
+          sorted = [...this.products]
+      }
+      this.filteredProducts = sorted
+    },
+
     async _fetchProducts() {
       try {
-        let apiProducts = await fetchProducts()
-        apiProducts = apiProducts.filter((p) => p && p.id)
+        const apiProducts = await fetchProducts().catch(() => [])
 
-        if (apiProducts.length > 0) {
-          const allProductsMap = new Map()
-
-          ;[...this.products, ...apiProducts].forEach((p) => {
-            if (p && p.id) allProductsMap.set(p.id, p)
+        if (Array.isArray(apiProducts) && apiProducts.length > 0) {
+          apiProducts.forEach((p) => {
+            p.popularity = p.popularity || Math.floor(Math.random() * 500)
+            p.createdAt = p.createdAt || Date.now()
+          })
+          const combined = [...this.products]
+          apiProducts.forEach((p) => {
+            if (!p || !p.id) return
+            if (!combined.some((local) => local.id === p.id)) {
+              combined.push(p)
+            }
           })
 
-          this.products = Array.from(allProductsMap.values())
-          this.filteredProducts = [...this.products]
+          this.products = combined
+          this.filteredProducts = [...combined]
         }
 
         this.isLoaded = true
-        console.log('Продукты успешно загружены.')
+        console.log('Загрузка товаров завершена (локальные + API).')
       } catch (error) {
-        console.error('Ошибка загрузки продуктов:', error)
+        console.error('Ошибка загрузки API. Используем только локальные:', error)
+        this.isLoaded = true
       } finally {
         this._loadingPromise = null
       }
     },
 
     filterByCategory(category) {
-      let list = category
-        ? this.products.filter((p) => p && p.category === category)
+      const list = category
+        ? this.products.filter((p) => p.category === category)
         : [...this.products]
+
       this.filteredProducts = list.filter(Boolean)
     },
 
