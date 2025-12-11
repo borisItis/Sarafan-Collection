@@ -13,8 +13,7 @@
     "preview": "vite preview",
     "format": "prettier --write src/",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
-    "homepage": "https://github.com/borisItis/Sarafan-Collection.git"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "pinia": "^3.0.4",
