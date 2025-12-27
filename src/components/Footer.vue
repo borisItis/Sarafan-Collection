@@ -51,7 +51,7 @@ const footerLinks = [
     links: [
       { text: 'О нас', url: '/about' },
       { text: 'Наши магазины', url: '#' },
-      { text: 'Контакты', url: '#' },
+      { text: 'Контакты', url: '/contacts' },
     ],
   },
   {

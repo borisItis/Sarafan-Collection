@@ -6,6 +6,7 @@ import Profile from '../views/Profile.vue'
 import Favorites from '../views/Favorites.vue'
 import About from '../views/About.vue'
 import ProductDetail from '../views/ProductDetail.vue'
+import Contacts from '../views/Contacts.vue'
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -15,6 +16,7 @@ const routes = [
   { path: '/favorites', name: 'favorites', component: Favorites },
   { path: '/about', name: 'about', component: About },
   { path: '/product/:id', name: 'ProductDetail', component: ProductDetail },
+  { path: '/contacts', name: 'contacts', component: Contacts },
 ]
 
 const router = createRouter({

@@ -1,5 +1,10 @@
 <template>
-  <div class="dropdown" @mouseenter="open = true" @mouseleave="open = false">
+  <div
+    class="dropdown"
+    @mouseenter="open = true"
+    @mouseleave="open = false"
+    @click.stop="open = !open"
+  >
     <slot></slot>
     <div class="dropdown__menu" v-if="open">
       <div class="dropdown__content">
@@ -34,11 +39,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { fetchProducts } from '../services/api.js'
 import ImageHeaderMenu from '../assets/images/ImageMenu.jpg'
 
 const open = ref(false)
+const dropdownRef = ref(null)
 const categories = ref([])
 
 const left = [
@@ -71,6 +77,21 @@ async function loadProducts() {
 function linkTo(name) {
   return { name: 'catalog', query: { category: name.toLowerCase() } }
 }
+
+function handleClick(e) {
+  if (!dropdownRef.value) return
+  if (!dropdownRef.value.contains(e.target)) {
+    open.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClick)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClick)
+})
 
 onMounted(loadProducts)
 </script>
@@ -146,6 +167,38 @@ onMounted(loadProducts)
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .dropdown__menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 60px);
+    padding: 1.25rem;
+    background: #fff;
+    box-shadow: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 9999;
+  }
+
+  .dropdown__content {
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 100%;
+  }
+
+  .dropdown__columns {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .dropdown__image-wrapper {
+    max-width: 100%;
+    width: 100%;
   }
 }
 </style>
