@@ -22,6 +22,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory('/Sarafan-Collection/'),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return new Promise((resolve) => {
+        const scrollOptions = { top: 0, behavior: 'smooth' }
+        window.scrollTo(scrollOptions)
+        setTimeout(() => resolve(scrollOptions), 300)
+      })
+    }
+  },
 })
 
 export default router
