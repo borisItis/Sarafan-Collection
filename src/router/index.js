@@ -7,6 +7,7 @@ import Favorites from '../views/Favorites.vue'
 import About from '../views/About.vue'
 import ProductDetail from '../views/ProductDetail.vue'
 import Contacts from '../views/Contacts.vue'
+import AuthPage from '../views/AuthPage.vue'
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -17,6 +18,28 @@ const routes = [
   { path: '/about', name: 'about', component: About },
   { path: '/product/:id', name: 'ProductDetail', component: ProductDetail },
   { path: '/contacts', name: 'contacts', component: Contacts },
+  {
+    path: '/auth',
+    component: AuthPage,
+    redirect: '/auth/login',
+    children: [
+      {
+        path: 'login',
+        name: 'Login',
+        component: () => import('../views/LoginForm.vue'),
+      },
+      {
+        path: 'register',
+        name: 'Register',
+        component: () => import('../views/RegisterForm.vue'),
+      },
+      {
+        path: 'reset',
+        name: 'Reset',
+        component: () => import('../views/ResetForm.vue'),
+      },
+    ],
+  },
 ]
 
 const router = createRouter({
@@ -30,6 +53,15 @@ const router = createRouter({
         const scrollOptions = { top: 0, behavior: 'smooth' }
         window.scrollTo(scrollOptions)
         setTimeout(() => resolve(scrollOptions), 300)
+      })
+
+      router.beforeEach((to, from, next) => {
+        const authStore = useAuthStore()
+        if (to.name === 'profile' && !authStore.isAuth) {
+          next()
+        } else {
+          next()
+        }
       })
     }
   },

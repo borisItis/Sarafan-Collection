@@ -88,7 +88,9 @@ function toggleMenu() {
 }
 
 function onSearch() {
-  router.push({ name: 'catalog', query: { q: search.value } })
+  if (search.value.trim() === '') return
+  router.push({ path: '/catalog', query: { search: search.value } })
+  search.value = ''
 }
 </script>
 
@@ -289,11 +291,19 @@ function onSearch() {
   .header__nav-right {
     gap: 1rem;
   }
+
+  .header__nav-logo-search {
+    width: 180px;
+  }
 }
 
 @media (max-width: 48rem) {
   .header__nav {
     padding: 0.75rem 1rem;
+  }
+
+  .header__nav-logo-search {
+    width: 140px;
   }
 
   .header__nav-right {
@@ -354,6 +364,8 @@ function onSearch() {
       }
     }
     &-search-wrapper {
+      width: 100%;
+      flex: 1;
       i {
         display: none;
       }
@@ -428,6 +440,8 @@ function onSearch() {
     gap: 0.5rem;
 
     &-search-wrapper {
+      width: 100%;
+      flex: 1;
       i {
         display: none;
       }

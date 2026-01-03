@@ -8,7 +8,7 @@
           реализации форм развития. С другой стороны реализация намеченных плановых заданий
           способствует подготовки и реализации форм развития.
         </p>
-        <a href="#" class="Inspired__link">О бренде</a>
+        <router-link to="/about" class="Inspired__link">О бренде</router-link>
       </div>
     </div>
     <div class="Inspired__image">

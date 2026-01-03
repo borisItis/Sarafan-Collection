@@ -49,6 +49,21 @@ import { useProductsStore } from '../store/products.js'
 const route = useRoute()
 const router = useRouter()
 const store = useProductsStore()
+const searchQuery = ref(route.query.search || '')
+
+const filteredProducts = computed(() => {
+  if (!searchQuery.value) return productStore.products
+  return productStore.products.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.value.toLowerCase()),
+  )
+})
+
+watch(
+  () => route.query.search,
+  (newVal) => {
+    searchQuery.value = newVal || ''
+  },
+)
 
 const visibleCount = ref(6)
 const visibleProducts = computed(() => store.filteredProducts.slice(0, visibleCount.value))
